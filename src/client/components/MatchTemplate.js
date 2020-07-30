@@ -3,7 +3,7 @@ import "./MatchTemplate.scss";
 import React from "react";
 import TeamStatsTable from "./MatchStatsTable";
 
-const OCTANE_TEAM_PHOTOS = "http://griffon.octane.gg/team-logos/";
+const OCTANE_TEAM_PHOTOS = "https://griffon.octane.gg/team-logos/";
 
 const TeamDisplay = ({ teamName }) => <div className="team-display">
     <img className="team-photo" src={`${OCTANE_TEAM_PHOTOS}${teamName}.png`} crossOrigin="anonymous" />
