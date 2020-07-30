@@ -16,6 +16,7 @@ $default-font-size: 1.2rem;
             font-weight: lighter;
             &:first-child {
                 font-size: $default-font-size + 0.2rem;
+                font-weight: bold;
             }
             &:not(:first-child) {
                 text-align: center;
