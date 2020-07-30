@@ -1,0 +1,58 @@
+@import "./fonts.scss";
+
+$octane-green: #21c983;
+$bg-color: #eee;
+
+html,
+body {
+    padding: 0;
+    margin: 0;
+    background-color: $bg-color;
+    font-family: "Dosis", sans-serif;
+    font-size: 1vw;
+}
+.home {
+    h1 {
+        text-align: center;
+        font-size: 3.3rem;
+        color: $octane-green;
+        margin-bottom: 0.7rem;
+        user-select: none;
+    }
+    .input-form {
+        display: flex;
+        margin: 0 auto 0.7rem auto;
+        width: 50%;
+        justify-content: center;
+        input {
+            transition: all 0.3s ease-out;
+            font-family: "Dosis";
+            font-size: 1rem;
+            height: 2rem;
+            padding: 0.2rem;
+            border: 1px solid darken($octane-green, 10);
+            &[type="text"] {
+                flex: 1;
+            }
+            &[type="submit"] [type="button"] {
+                width: 100px;
+                border-left-width: 0;
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+            &:focus {
+                box-shadow: 0 0 0.4rem $octane-green;
+                outline: none;
+            }
+        }
+    }
+    .display-area {
+        width: 80%;
+        padding: 1rem;
+        box-sizing: border-box;
+        margin: 0 auto;
+        border: 1px solid darken($bg-color, 20);
+        position: relative;
+    }
+}

@@ -1,0 +1,32 @@
+$default-font-size: 1.2rem;
+
+.match-data-table {
+    width: 100%;
+    font-size: $default-font-size;
+    letter-spacing: 0.07rem;
+    border-collapse: collapse;
+    tbody {
+        tr {
+            &.seperator {
+                height: 1.6rem;
+            }
+        }
+        td {
+            padding: 0.2rem;
+            font-weight: lighter;
+            &:first-child {
+                font-size: $default-font-size + 0.2rem;
+            }
+            &:not(:first-child) {
+                text-align: center;
+            }
+        }
+    }
+    thead {
+        @extend tbody;
+        td {
+            font-weight: bold;
+            font-size: $default-font-size !important;
+        }
+    }
+}
