@@ -1,8 +1,9 @@
-#photo-area {
+.match-stats {
     width: 100%;
     height: auto;
     position: relative;
     color: white;
+    font-family: "ArcaMajora2";
     .teams {
         position: absolute;
         display: flex;
@@ -26,9 +27,11 @@
             }
             .team-name {
                 width: 100%;
+                margin-top: 0.2rem;
                 font-size: 1.4rem;
                 line-height: 1.4rem;
                 font-weight: bold;
+                text-transform: uppercase;
             }
         }
     }

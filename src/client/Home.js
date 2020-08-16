@@ -1,66 +1,77 @@
 import "./Home.scss";
 import React from "react";
-import MatchTemplate from "./components/MatchTemplate";
-import domToImage from "dom-to-image";
+import { ExportPhoto } from "./util/photos";
+import MatchTemplate from "./components/Templates/MatchStats/MatchTemplate";
+import TopPerformers from "./components/Templates/TopPerformers/TopPerformersTemplate";
+import TemplateSelector from "./components/TemplateSelector";
 
-const API_ENDPOINT = "https://api.octane.gg/api/zeebo/";
+const MATCH_API_ENDPOINT = "https://api.octane.gg/api/zeebo/";
+const TOPPERFORMERS_API_ENDPOINT = "https://api.octane.gg/api/zeebo-stats/";
+
+const TEMPLATES = [{
+    id: "asdf",
+    name: "Octane Match Generator",
+    type: "MATCH",
+    photo: "/assets/MatchStatsTemplate.jpg",
+    org: "Octane.gg",
+    textColor: "white",
+    orgPhoto: null,
+    columnOrder: []
+}, {
+    id: "asdfasd",
+    name: "Octane Top Performers",
+    type: "TOPPERFORMERS",
+    photo: "/assets/TopPerformersTemplate.jpg",
+    org: "Octane.gg",
+    textColor: "white",
+    orgPhoto: null,
+    columnOrder: []
+}];
+
+const INITIAL_STATE = { data: null, matchId: "", minGames: 0, currentTemplate: null, templates: TEMPLATES };
 
 export default class HomeComponent extends React.PureComponent {
-    state = { data: null, matchId: "" };
+    state = INITIAL_STATE;
 
     render() {
-        const { data } = this.state;
+        const { data, templates, currentTemplate, matchId, minGames } = this.state;
+        const templateData = templates && templates.find(_ => _.id === currentTemplate);
 
         return <div className="home">
             <h1>Octane Match Generator</h1>
-            <form className="input-form" onSubmit={this._handleSubmit}>
-                <input type="text" placeholder="Match id" onChange={this._updateMatchId} />
+            <TemplateSelector templates={templates} onChange={this._updateCurrentTemplate} />
+            {currentTemplate && <form className="input-form" onSubmit={this._handleSubmit}>
+                <input type="text" placeholder="Match/Event ID" value={matchId} onChange={this._updateMatchId} />
+                {templateData.type === "TOPPERFORMERS" && <input type="number" value={minGames} onChange={this._updateMinGames} />}
                 <input type="submit" value="Go!" />
-                {data && <input type="button" value="Export" onClick={this._exportPhoto} />}
-            </form>
+                {data && <input type="button" value="Export" onClick={() => ExportPhoto(this.state.matchId)} />}
+            </form>}
             {data && <div className="display-area">
-                <MatchTemplate data={data} />
+                {templateData.type === "MATCH" && <MatchTemplate data={data} {...templateData} />}
+                {templateData.type === "TOPPERFORMERS" && <TopPerformers data={data} {...templateData} />}
             </div>}
         </div>;
     }
 
     _updateMatchId = (e) => this.setState({ matchId: e.target.value });
+    _updateMinGames = (e) => this.setState({ minGames: e.target.value });
+    _updateCurrentTemplate = (id) => this.setState({ ...INITIAL_STATE, currentTemplate: id });
 
     _handleSubmit = async (e) => {
         e.preventDefault();
+        const { templates, matchId, minGames, currentTemplate } = this.state;
 
-        const apiData = await (await fetch(API_ENDPOINT + this.state.matchId)).json();
+        const templateType = templates && templates.find(_ => _.id === currentTemplate)?.type;
+        let templateApi;
+
+        if (templateType === "MATCH") {
+            templateApi = `${MATCH_API_ENDPOINT}${matchId}`;
+        } else if (templateType === "TOPPERFORMERS") {
+            templateApi = `${TOPPERFORMERS_API_ENDPOINT}${matchId}/${minGames}`;
+        }
+
+        const apiData = await (await fetch(templateApi)).json();
 
         this.setState({ data: apiData.data });
-    }
-
-    _exportPhoto = async () => {
-        let defaultPic = new Image();
-        defaultPic.src = "/assets/DefaultTeamPic.png";
-        defaultPic.onload = async (e) => {
-            const canvas = document.createElement("canvas");
-            canvas.height = defaultPic.height;
-            canvas.width = defaultPic.width;
-            canvas.style = { backgroundColor: "transparent" };
-            const context = canvas.getContext("2d");
-            context.drawImage(defaultPic, 0, 0);
-            const photoArea = document.getElementById("photo-area");
-            const scale = 1920 / photoArea.clientWidth;
-            const blob = await domToImage.toJpeg(photoArea,
-                {
-                    imagePlaceholder: canvas.toDataURL("image/png"),
-                    style: {
-                        transform: 'scale(' + scale + ')',
-                        transformOrigin: 'top left'
-                    },
-                    height: 1080,
-                    width: 1920
-
-                });
-            let link = document.createElement('a');
-            link.download = `${this.state.matchId}.jpg`;
-            link.href = blob;
-            link.click();
-        }
     }
 }

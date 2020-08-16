@@ -1,0 +1,40 @@
+.players-stats-table {
+    width: 85%;
+    position: absolute;
+    top: 13.5rem;
+    font-family: "Asenine";
+    color: white;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    font-size: 1.7rem;
+    letter-spacing: 0.05rem;
+    border-collapse: collapse;
+    tbody {
+        td {
+            padding: 0.2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            &:first-child {
+                font-family: "ArcaMajora2";
+                font-size: 1.3rem;
+            }
+            &:last-child {
+                text-align: right;
+            }
+        }
+    }
+    thead {
+        @extend tbody;
+        td {
+            text-transform: uppercase;
+            font-size: 1.4rem;
+            &:first-child {
+                font-family: "Asenine";
+                font-size: 1.4rem;
+            }
+            &:last-child {
+                text-align: right;
+            }
+        }
+    }
+}

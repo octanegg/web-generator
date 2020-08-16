@@ -35,7 +35,7 @@ export function getUserTemplates(username) {
 export function addTemplate(type, name, photo, org, tableColor, textColor, orgPhoto, columnOrder) {
     const uniqueId = uuid.v4();
 
-    db.get("templates").push({ id: uniqueId, type, photo, org, tableColor, textColor, orgPhoto, columnOrder }).write();
+    db.get("templates").push({ id: uniqueId, name, type, photo, org, tableColor, textColor, orgPhoto, columnOrder }).write();
     db.get("users").find({ username: "admin" }).get("templates").push(uniqueId).write();
 }
 

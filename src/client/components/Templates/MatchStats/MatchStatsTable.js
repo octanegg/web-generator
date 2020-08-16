@@ -2,6 +2,7 @@ import "./MatchStatsTable.scss";
 
 import React from "react";
 import numeral from "numeral";
+import { NumberFormatter } from "../../../util/numbers";
 
 export default class MatchStatsTable extends React.PureComponent {
 
@@ -15,40 +16,30 @@ export default class MatchStatsTable extends React.PureComponent {
     }
 
     render() {
-        const { team1, team2, teamSize } = this.props;
+        const { team1, team2, teamSize, tableColor, textColor } = this.props;
         const { columnOrder, removedColumns } = this.state;
 
         const filteredColumns = columnOrder.filter(_ => _ !== "Team" && !removedColumns.some(col => col === _));
         const sortedTeam1 = team1.sort(this._sortPlayerByRating);
         const sortedTeam2 = team2.sort(this._sortPlayerByRating);
 
-        return <table className="table match-data-table">
+        return <table className="table match-data-table" style={{ color: textColor }}>
             <thead>
-                <tr>{filteredColumns.map(columnName => <td key={columnName}>{columnName}</td>)}</tr>
+                <tr>{filteredColumns.map(columnName => <td style={{ borderColor: tableColor }} key={columnName}>{columnName}</td>)}</tr>
             </thead>
             <tbody>
                 {sortedTeam1.map((playerData, i) =>
                     <tr key={`1-${i}`}>{filteredColumns.map((field, j) =>
-                        <td key={j}>{!isNaN(playerData[field]) ? this._numberFormatter(field, playerData[field]) : playerData[field]}</td>)}
+                        <td style={{ borderColor: tableColor }} key={j}>{!isNaN(playerData[field]) ? NumberFormatter(field, playerData[field]) : playerData[field]}</td>)}
                     </tr>)}
                 <tr key="sep" className="seperator"></tr>
                 {sortedTeam2.map((playerData, i) =>
                     <tr key={`2-${i}`}>{filteredColumns.map((field, j) =>
-                        <td key={j}>{!isNaN(playerData[field]) ? this._numberFormatter(field, playerData[field]) : playerData[field]}</td>)}
+                        <td style={{ borderColor: tableColor }} key={j}>{!isNaN(playerData[field]) ? NumberFormatter(field, playerData[field]) : playerData[field]}</td>)}
                     </tr>)}
             </tbody>
         </table>;
     }
 
     _sortPlayerByRating = (a, b) => b.Rating - a.Rating;
-
-    _numberFormatter(key, value) {
-        switch (key) {
-            case "SHP":
-            case "GP":
-                return numeral(value).format("0.00%");
-            default:
-                return numeral(value).format("0.00");
-        }
-    }
 }

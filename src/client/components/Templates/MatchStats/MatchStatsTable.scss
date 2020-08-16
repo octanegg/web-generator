@@ -1,8 +1,9 @@
-$default-font-size: 1.2rem;
+$default-font-size: 1.7rem;
 
 .match-data-table {
     width: 100%;
     font-size: $default-font-size;
+    font-family: "Asenine";
     letter-spacing: 0.07rem;
     border-collapse: collapse;
     tbody {
@@ -14,6 +15,7 @@ $default-font-size: 1.2rem;
         td {
             padding: 0.2rem;
             font-weight: lighter;
+            letter-spacing: 0.12rem;
             &:first-child {
                 font-size: $default-font-size + 0.2rem;
                 font-weight: bold;
@@ -25,9 +27,12 @@ $default-font-size: 1.2rem;
     }
     thead {
         @extend tbody;
+        letter-spacing: normal;
         td {
-            font-weight: bold;
-            font-size: $default-font-size !important;
+            font-weight: normal !important;
+            font-size: $default-font-size * 0.85 !important;
+            opacity: 0.8;
+            text-transform: uppercase;
         }
     }
 }
