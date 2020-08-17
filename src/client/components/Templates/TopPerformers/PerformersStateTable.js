@@ -28,7 +28,7 @@ export default class PerformersStatsTable extends React.PureComponent {
                 {playersData.map((playerData, index) => <tr key={playerData.Player}>
                     {filteredColumns.map((field, j) =>
                         <td style={{ borderColor: tableColor }} key={j}>
-                            {!isNaN(playerData[field]) ? NumberFormatter(field, playerData[field]) : field === "Player" ? `#${index + 1} ${playerData[field]}` : playerData[field]}
+                            {!isNaN(playerData[field]) ? NumberFormatter(field, playerData[field]) : field === "Player" ? <><span className="position">#{index + 1}</span> {playerData[field]}</> : playerData[field]}
                         </td>)}
                 </tr>)}
             </tbody>
