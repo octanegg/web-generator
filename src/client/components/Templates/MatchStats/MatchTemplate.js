@@ -3,10 +3,10 @@ import "./MatchTemplate.scss";
 import React from "react";
 import TeamStatsTable from "./MatchStatsTable";
 
-const OCTANE_TEAM_PHOTOS = "https://griffon.octane.gg/team-logos/";
+const OCTANE_TEAM_PHOTOS = "http://griffon.octane.gg/teams/";
 
 const TeamDisplay = ({ teamName }) => <div className="team-display">
-    <img className="team-photo" src={`${OCTANE_TEAM_PHOTOS}${teamName}.png`} crossOrigin="anonymous" />
+    <img className="team-photo" src={`${OCTANE_TEAM_PHOTOS}${formatTeamName(teamName)}.png`} crossOrigin="anonymous" />
     <div className="team-name">{teamName}</div>
 </div>;
 
@@ -25,5 +25,7 @@ const MatchTemplate = (props) => {
         <div className="event-name">{Match.Event}</div>
     </div>
 }
+
+const formatTeamName = (teamName) => teamName?.replace(/ /ig, "-").replace(/\./ig, "").toLowerCase();
 
 export default MatchTemplate;
